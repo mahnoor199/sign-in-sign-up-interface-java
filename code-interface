@@ -1,0 +1,1549 @@
+
+ 
+package project;
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.ActionEvent.*;
+import java.awt.Event.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
+public class Project 
+{
+    public void window()
+    {ImageIcon  i1= new ImageIcon("login.jpg");
+    ImageIcon  i2= new ImageIcon("about.png");
+        JFrame f= new JFrame("                                                                                GAMES ");
+       JPanel p= new JPanel();
+       JButton b, b1,b2, b4;
+       b= new JButton();
+       b.setIcon(i1);
+       b.setBounds(450,100,250,70);
+       b1= new JButton(i2);
+       b1.setBounds(800,10,200,200);
+       b.addActionListener(new ActionListener()
+                {
+                    public  void actionPerformed(ActionEvent e)//login
+                    {   try {
+                        f.setVisible(false);
+                        players p2= new players();
+                        p2.window3();
+                        } catch (Exception ex) {
+                            Logger.getLogger(Project.class.getName()).log(Level.SEVERE, null, ex);
+                        }
+                        
+                }  
+                });
+        b1.addActionListener(new ActionListener()//about
+                {
+                    public  void actionPerformed(ActionEvent e)
+                    {  
+                        JOptionPane.showMessageDialog(null," here we have to 2 games for your fun the more you play the more score. \nHope you enjoy these games ");
+                    }
+                    }); 
+        b2= new JButton();
+        b2.setIcon(new ImageIcon("signup.jpg"));
+        b2.setBounds(450,300,250,70);
+        b2.addActionListener(new ActionListener()//signup
+                {
+                    public  void actionPerformed(ActionEvent e)
+                    {   try {
+                        f.setVisible(false);
+                        players p2= new players();
+                        p2.window2();
+                        } catch (Exception ex) {
+                            Logger.getLogger(Project.class.getName()).log(Level.SEVERE, null, ex);
+                        }
+                        
+                }
+                    
+                });
+                
+        
+        b4= new JButton();
+        b4.setIcon(new ImageIcon("exit2.jpg"));
+        b4.setBounds(450,500,250,70);
+        b4.addActionListener(new ActionListener(){
+public  void actionPerformed(ActionEvent e)//exit
+{
+    System.exit(0);
+}
+        });
+       p.setLayout(null);
+       ImageIcon  i= new ImageIcon("thinking.GIF");
+       JLabel l= new JLabel();
+       l.setIcon(i);
+       l.setBounds(-30,-115,400,700);
+       l.setSize(900,900);
+       Image icon = Toolkit.getDefaultToolkit().getImage("hangman.jpg"); 
+        p.setBackground(Color.blue);
+        p.add(b);
+        p.add(b4);
+        p.add(b1);
+        p.add(l);
+        p.add(b2);
+        f.add(p);
+        f.setSize(1000,10000);
+        f.setResizable(false);
+        f.setIconImage(icon);    
+        f.show();
+    }
+    public static void main(String[] args) {
+        // TODO code application logic here
+             Project p=new Project();
+             p.window();
+    }
+    
+}
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package project;
+import java.awt.Color;
+import java.awt.Cursor;
+import java.awt.Font;
+import java.awt.GridLayout;
+import java.awt.Image;
+import java.awt.Toolkit;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.sql.*;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.*;
+import javax.swing.table.DefaultTableModel;
+public class players 
+{
+    private String name;
+    public  int ID;
+    private double id1;
+    private String pass;
+    JTextField t1= new JTextField(10);
+    JPasswordField p2= new JPasswordField(10);
+    int Score;
+ 
+    public void window2()throws Exception
+    {
+        JButton b3=new JButton("HOME");//main window;
+        Class.forName("org.sqlite.JDBC");
+	                      Connection con = DriverManager.getConnection("jdbc:sqlite:test.db");
+	                       Statement stmt = null;
+	                       stmt = con.createStatement(); 
+                                /*String sql = "CREATE TABLE players3 " +
+                                        " (ID          INT    NOT NULL, " + 
+                                          " NAME       TEXT     ,"+
+                                        "PASSWORD         TEXT  ,"+
+                                        "SCORE          INT )";
+                                        
+                               stmt.executeUpdate(sql);*/
+    JFrame f1= new JFrame("                                     signup");
+     Image icon = Toolkit.getDefaultToolkit().getImage("signup1.png");
+     f1.setIconImage(icon);
+     
+    JPanel p= new JPanel();
+    p.setBackground(Color.magenta);
+    JTextField t= new JTextField(20);
+    JPasswordField p1= new JPasswordField(8);
+    p1.setEchoChar('*');
+    JButton b= new JButton("ok");
+    p.setLayout(null);
+    JLabel l= new JLabel("ENTER NAME ");
+    JLabel l2= new JLabel("ENTER PASSWORD ");
+    l.setBounds(250,100,150,100);
+    l2.setBounds(250,150,150,100);
+    t.setBounds(400,130,150,30);
+    p1.setBounds(400,180,150,30);
+    b3.setBounds(10,20,200,200);
+    b3.setIcon(new ImageIcon("home1.png"));
+     b3.addActionListener(new ActionListener()//home
+                {
+                   public void actionPerformed(ActionEvent e)
+                   {
+                       f1.setVisible(false);
+                       Project p= new Project();
+                       p.window();
+                   }
+                   });
+    b.setBounds(400,300,150,200);b.setIcon(new ImageIcon(icon));
+    
+    b.addActionListener(new ActionListener()//add 
+                {
+                   public void actionPerformed(ActionEvent e)
+                   {
+                       try {
+                           PreparedStatement ps=con.prepareStatement("insert into players3 values(?,?,?,?)");
+                           
+                           pass=p1.getText();//password password field
+                           name=t.getText();//
+                      
+                        
+                           
+                                   { 
+                                       id1=(Math.random()*7000);
+                                   //genrate random id 
+                           ID=(int)id1;
+                            ps.setInt(1,ID);
+                            ps.setString(2,name);
+                            ps.setString(3,pass);
+                            ps.setInt(4,0);
+                                }
+                            
+                           
+                            if((t.getText().equals(""))||(p1.getText().equals("")))
+                           JOptionPane.showMessageDialog(null,"fields culdnt be empty");
+                            else
+                            {
+                                 
+                                
+                                ps.executeUpdate();
+                            
+                            JOptionPane.showMessageDialog(null,"your id for login is "+ID);}
+                            
+                            
+                       } catch (SQLException ex) {
+                           Logger.getLogger(players.class.getName()).log(Level.SEVERE, null, ex);
+                       
+                       }
+                       
+                       
+                        
+                   }
+                    
+                });
+    
+    p.add(t);
+    p.add(l);
+    p.add(l2);
+    p.add(p1);
+    p.add(b);f1.setSize(900,900);
+    p.add(b3);
+    f1.add(p);f1.setResizable(false);
+    f1.show();
+ 
+    
+    
+}
+    public void window3()
+            throws Exception
+    {
+        JButton b3= new JButton();
+        b3.setBounds(10,20,200,200);
+    b3.setIcon(new ImageIcon("home1.png"));
+     b3.addActionListener(new ActionListener()//home
+                {
+                   public void actionPerformed(ActionEvent e)
+                   {
+                       Project p= new Project();
+                       p.window();
+                   }
+                   });
+        JFrame f= new JFrame("login");
+        JPanel p= new JPanel();p.setLayout(null);
+        p.setBackground(Color.ORANGE);
+        Image icon = Toolkit.getDefaultToolkit().getImage("loginin.jpg");
+        f.setIconImage(icon);
+        p2.setEchoChar('*');//password
+        JLabel l= new JLabel("enter ID appointed  to you");
+        JLabel l1=new JLabel(" enter password for login");
+      l.setBounds(250,100,150,100);
+      l1.setBounds(250,160,150,100);
+      JButton b= new JButton("ok");
+      b.setIcon(new ImageIcon(icon));
+    t1.setBounds(400,130,90,30);//id
+    t1.addActionListener(new ActionListener()
+    {
+        public void actionPerformed(ActionEvent e)
+                
+        {
+            String s=t1.getText();
+            for (int i=0;i<s.length();i++)    
+            {
+                if(s.charAt(i)>='0'&&s.charAt(i)<='9');
+                else
+                {  t1.setText("invalid");
+                JOptionPane.showMessageDialog(null," enter valid id ");
+                }
+                }
+                    
+            
+        }
+        
+    });
+    
+    p2.setBounds(400,190,90,30);
+    b.setBounds(300,400,100,100);
+    b.addActionListener(new ActionListener()//login
+                {
+    public void actionPerformed(ActionEvent e)
+    {
+      
+        con();//
+       
+        
+    }
+                });
+     p.add(t1);
+    p.add(l);
+    p.add(l1);
+    p.add(p2);
+    p.add(b);f.setSize(400,400);f.setSize(900,900);
+    p.add(b3);
+    f.add(p);
+    f.setResizable(false);
+    f.show();
+        
+}
+    public void con()
+    {
+        try
+        {
+            
+	    	 
+	        Class.forName("org.sqlite.JDBC");
+	        Connection con = DriverManager.getConnection("jdbc:sqlite:test.db");
+	         Statement stmt = null;
+	        stmt = con.createStatement();
+                ResultSet rs = stmt.executeQuery( "SELECT * FROM players3 " );
+                int find=0;
+	               while ( rs.next() ) {
+                       int id = rs.getInt("id");
+	            String  name = rs.getString("name");
+                    String pa=rs.getString("password");
+                    int id1= Integer.parseInt(t1.getText());//id
+                    String pass = p2.getText();//pass
+	           if ((pa.equals(pass))&& (id==(id1)))
+                  {
+                      JOptionPane.showMessageDialog(null,"success fully login");
+                  this.name=name;
+                  this.Score=rs.getInt("SCORE");this.pass=pa;
+                  this.ID=id;
+                
+                   games();
+                  find=1;
+                  }
+                   
+                       }
+                       if(find==0)
+                       {
+                        JOptionPane.showMessageDialog(null,"your user ID/ Passwod is WRONG IF YOU ARE NOT REGISTERED FIRST SIGNUP ");
+                          
+                       }
+                       
+                       rs.close();
+                           
+                 
+                           
+                               
+        
+	        
+      
+                 stmt.close();
+                 con.close();
+                 
+                 
+      }
+      catch ( Exception e ) {
+	    	  System.err.println( e.getClass().getName() + ": " + e.getMessage() );
+	         System.out.println("Not Showing");
+	      }
+    }  
+    public void games()
+    {   LocalDate date=LocalDate.now();
+           DateTimeFormatter d;
+           JTable table=new JTable();
+           
+DefaultTableModel model;
+  JLabel l1= new JLabel(name);
+  JLabel l2= new JLabel("SCORE "+Score);
+     JFrame f= new JFrame("GAMES ");      
+Object col[]= {"NAME","SCORE"};model = new DefaultTableModel();
+model.setColumnIdentifiers(col);
+table.setModel(model);
+   JScrollPane scrollpane = new JScrollPane(table);scrollpane.setBounds(250,10,700,700);
+   JButton b5= new JButton(new ImageIcon("back1.png"));
+   b5.addActionListener(new ActionListener()//back button
+   {public void actionPerformed(ActionEvent e6)
+   {
+       try {
+           window3();
+           f.setVisible(false);
+       } catch (Exception ex) {
+           Logger.getLogger(players.class.getName()).log(Level.SEVERE, null, ex);
+       }
+   }
+   });
+   
+  Object [] row=new Object[2];
+  try
+        {
+	        Class.forName("org.sqlite.JDBC");
+	        Connection con = DriverManager.getConnection("jdbc:sqlite:test.db");
+	         Statement stmt = null;
+	        stmt = con.createStatement();
+                ResultSet rs = stmt.executeQuery( "SELECT * FROM players3 " );
+                while ( rs.next() ) {
+                         int score1= rs.getInt("SCORE");
+	            String  name = rs.getString("name");
+                    row[0]=name;
+                    row[1]=score1;model.addRow(row);
+                    
+                }
+        }
+  catch(Exception e)
+  {
+  }
+               JButton  b4= new JButton("UPDATE INFFO");//update
+               b4.setBounds(600,270,150,70);
+               b4.addActionListener(new ActionListener(){
+                  public void actionPerformed(ActionEvent e1) 
+                  { f.setVisible(false);
+                   
+                    frame1();  
+                   
+               }
+               });
+               
+               JButton b1= new JButton("game 1");//game 
+               b1.addActionListener(new ActionListener(){
+                   public void actionPerformed(ActionEvent e2)
+                   {
+                       f.setVisible(false);
+                       game2();
+                   }
+               });
+               b1.setBounds(600,20,100,70);
+               
+                JButton b2= new JButton("game 2")
+                        ;b2.setBounds(600,100,100,70);
+                        b2.addActionListener(new ActionListener()
+                                {
+                                   public void actionPerformed(ActionEvent e6)
+                                   {
+                                       f.setVisible(false);
+                                       game g1= new game(ID);
+                                       
+                                   }
+                        });
+                        
+                 JButton b3= new JButton("DELETE ACCOUNT");//deletion
+                 b3.addActionListener(new ActionListener()
+                         {
+                             public void actionPerformed(ActionEvent e4)
+                             {
+                                   try {
+                             Class.forName("org.sqlite.JDBC");
+	        Connection con = DriverManager.getConnection("jdbc:sqlite:test.db");
+	         Statement stmt = null;
+	        stmt = con.createStatement();
+                  ResultSet rs = stmt.executeQuery( "SELECT * FROM players3 " );int find=0;
+                      while((rs.next())&&find==0)
+                      {
+                          if(rs.getInt("ID")==ID)
+                          
+                          { 
+                              String sql = "DELETE FROM players3  WHERE id ="+ID+"";
+                             
+                               stmt.executeUpdate(sql);
+                              find=1;
+                              JOptionPane.showMessageDialog(null," successfully deleted ");
+                              f.setVisible (false);
+                               Project p= new Project();
+                               p.window(); 
+                               
+                          }
+                      }
+                       } catch (SQLException ex) {
+                           Logger.getLogger(players.class.getName()).log(Level.SEVERE, null, ex);
+                       } catch (ClassNotFoundException ex) {
+                           Logger.getLogger(players.class.getName()).log(Level.SEVERE, null, ex);
+                       }
+                       
+                             }
+                         });
+                 b3.setBounds(600,180,200,70);
+           d=DateTimeFormatter.ofPattern("dd-MM-yyyy");
+           String date1;
+           date1=date.format(d);
+       
+        JPanel p= new JPanel();
+        p.setSize(90,90);
+        p.setLayout(null);
+        b5.setBounds(20,100,100,100);
+        JLabel l= new JLabel(date1);
+        l1.setBounds(1200,-100,200,300);
+        l2.setBounds(1200,-70,200,300);
+        l.setBounds(10,20,100,100);
+        p.add(b5);
+         f.add(p);
+         p.add(scrollpane);
+        p.add(l);
+        JPanel p1= new JPanel();
+        p1.setLayout(null);
+         p.add(l1);
+        p.add(l2);
+        p1.add(b1);
+        p1.add(b2);
+        p1.add(b3);
+        p1.add(b4);
+        p1.setBackground(Color.yellow);
+        p.setBackground(Color.RED);
+        f.add(p1);
+        f.setSize(900,900);
+        f.setLayout(new GridLayout(2,1,3,10));
+       
+        f.show();    
+}
+    public void frame1()
+    {             
+    JFrame f1= new JFrame("                                     update");
+    JPanel p= new JPanel();
+    JTextField t= new JTextField(20);
+    JPasswordField p1= new JPasswordField(8);
+    p1.setEchoChar('*');
+    JButton b= new JButton("ok");
+    p.setLayout(null);
+    JLabel l= new JLabel("ENTER NAME ");
+    JLabel l2= new JLabel("ENTER PASSWORD ");
+    l.setBounds(250,60,100,100);
+    l2.setBounds(250,100,150,100);
+    t.setBounds(370,90,90,30);t.setText(name);
+    p1.setBounds(370,130,90,30);
+ System.out.println(name);
+ pass=p1.getText();
+    b.setBounds(300,200,100,100);
+    b.addActionListener(new ActionListener()
+                {
+                   public void actionPerformed(ActionEvent e)
+                   {
+                       
+                           try {
+                               Class.forName("org.sqlite.JDBC");
+                               Connection con = DriverManager.getConnection("jdbc:sqlite:test.db");
+                               Statement stmt = null;
+                               stmt = con.createStatement();
+                               ResultSet rs = stmt.executeQuery( "SELECT * FROM players3 " );int find=0;
+                               while((rs.next())&&find==0)
+                               {
+                                   if(rs.getInt("ID")==ID)
+                                   {name=t.getText(); pass=p1.getText();
+                                   System.out.println("iii");
+                              String sql = "UPDATE players3 SET NAME='"+name+"',PASSWORD='"+pass+"' WHERE id ="+ID+"";
+                                   
+                                   stmt.executeUpdate(sql);
+                                   find=1;
+                                   
+                                   JOptionPane.showMessageDialog(null,"successfully updated");
+                                   games();
+                                   }                                   }
+                               } catch (Exception ex) {
+                               Logger.getLogger(players.class.getName()).log(Level.SEVERE, null, ex);
+                           }
+                           }    
+                });
+    
+    p.add(t);
+    p.add(l);
+    p.add(l2);
+    p.add(p1);
+    p.add(b);f1.setSize(900,900);
+    f1.add(p);
+    f1.show();
+}
+    public void game2()
+    {
+      questions q= new questions(ID);
+    
+      
+         
+    }}
+    /*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package project;
+
+/**
+ *
+ * @author Other
+ */
+import java.awt.event.*;
+import java.awt.*;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.logging.Level;
+import javax.swing.*;
+import jdk.internal.instrumentation.Logger;
+
+public class questions implements ActionListener {
+
+	String[] Question= {
+			"  Pakistan is located in the ?",
+			"  Faisal Mosque was built by a/an -------------- architect.",
+			"  In Urdu, the name Pakistan literally means?",
+			"  Which animal is the national animal of Pakistan?",
+			"  When Pakistan tested nuclear weapons?",
+			"  Pakistan is a member of all of the following international organizations except",
+			"  K2 the second highest mountain in the world is located along the border of Pakistan and",
+			"  Pakistan was created through long",
+			"  Badshahi Mosque in Lahore was built by Mughal emperor?",
+			"  The longest serving Army Chief (for about 12 years) was?",
+                        " who is founder of pakistan "};
+	String[][] options= {
+			{"East Asia","West Asia","South Asia","Central Asia"},
+			{"Saudi","Turkish","American","French"},
+			{"Pure land","Truthful land","Land of the pure","Land of the truthfulness"},
+			{"Tiger","Lion","Arabian horse","Markhor"},
+			{"24 May 1998" ,"26 May 1998" ,"28 May 1998","30 May 1998"},
+			{"United Nations" ,"SAARC","SCO" ,"G20"},
+			{"India","Afghanistan","China","Iran"},
+			{"Political struggle","Religious struggle" ,"Military struggle","Educational struggle"},
+			{"Aurangzeb Alamgir","Bahadur Shah Zafar","Jalal-ud-Din Akbar","Nasir-ud-Din Humayun"},
+			{"Ayub Khan","Zia-ul-Haq" ,"Pervez Musharraf" ,"Ashfaq Pervez Kiyani"},
+                        {" QuaideAZam", "aurangzaib ","liaquiat ali khan "," ali"}
+          	};
+	char[] Answers= {
+		'C',
+		'B',
+		'C',
+		'D',
+		'C',
+		'D',
+		'C',
+		'A',
+		'A',
+		'B',
+                'A'
+	};
+	char guess;
+	char answer;
+	int index;
+	int correct_guesses=0;
+	int total_questions=Question.length;
+	int result;
+	int seconds=10;
+	
+	JFrame frame=new JFrame();
+	JTextField textfield=new JTextField();//hold current question number
+	JTextArea textarea=new JTextArea();//hold current question 
+	JButton buttonA=new JButton();
+	JButton buttonB=new JButton();
+	JButton buttonC=new JButton();
+	JButton buttonD=new JButton();
+	Cursor c=new Cursor(Cursor.HAND_CURSOR);
+	JLabel answer_labelA=new JLabel();
+	JLabel answer_labelB=new JLabel();
+	JLabel answer_labelC=new JLabel();
+	JLabel answer_labelD=new JLabel();
+	JLabel time_label=new JLabel();
+	JLabel seconds_left=new JLabel();//for countdown timer
+	
+	Timer timer= new Timer(1000, new ActionListener() {
+ 		public void actionPerformed(ActionEvent e)
+ 		{
+ 			seconds--;
+ 			seconds_left.setText(String.valueOf(seconds));
+ 			if(seconds<=0)
+ 				displayAnswer();
+ 		}
+                
+ 	});
+        int id;
+	
+	public questions(int ID)
+	{this.id=ID;
+		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		frame.setSize(650,700);
+		frame.getContentPane().setBackground(Color.DARK_GRAY);
+		frame.setLayout(null);
+		frame.setResizable(false);
+		
+		
+		textfield.setBounds(10, 10, 600, 50);
+		textfield.setBackground(Color.BLACK);
+		textfield.setForeground(Color.green);
+		textfield.setFont(new Font("Ink Free",Font.BOLD,30));
+		textfield.setBorder(BorderFactory.createBevelBorder(1));
+		textfield.setHorizontalAlignment(JTextField.CENTER);
+		textfield.setEditable(false);
+		
+		
+		textarea.setBounds(10, 70, 600, 90);
+		textarea.setLineWrap(true);
+		textarea.setWrapStyleWord(true);
+		textarea.setBackground(Color.black);
+		textarea.setForeground(Color.green);
+		textarea.setFont(new Font("MV Boli",Font.BOLD,25));
+		textarea.setBorder(BorderFactory.createBevelBorder(1));
+		textarea.setEditable(false);
+         
+		
+		buttonA.setBounds(0,170,80,80);
+		buttonA.setFont(new Font("MV Boli",Font.BOLD,35));
+		buttonA.setFocusable(false);
+	    buttonA.setText("A");
+	    buttonA.setCursor(c);
+		buttonA.addActionListener(this);
+		
+		buttonB.setBounds(0,270,80,80);
+		buttonB.setFont(new Font("MV Boli",Font.BOLD,35));
+		buttonB.setFocusable(false);
+		buttonB.setText("B");
+	    buttonB.setCursor(c);
+		buttonB.addActionListener(this);
+		
+		buttonC.setBounds(0,370,80,80);
+		buttonC.setFont(new Font("MV Boli",Font.BOLD,35));
+		buttonC.setFocusable(false);
+		buttonC.setText("C");
+		buttonC.setCursor(c);
+		buttonC.addActionListener(this);
+		
+		buttonD.setBounds(0,470,80,80);
+		buttonD.setFont(new Font("MV Boli",Font.BOLD,35));
+		buttonD.setFocusable(false);
+		buttonD.setCursor(c);
+		buttonD.setText("D");
+		buttonD.addActionListener(this);
+		
+		
+		answer_labelA.setBounds(100,160,500,100);
+		answer_labelA.setBackground(Color.DARK_GRAY);
+		answer_labelA.setForeground(Color.green);
+		answer_labelA.setFont(new Font("MV Boli",Font.PLAIN,35));
+		
+		answer_labelB.setBounds(100,260,500,100);
+		answer_labelB.setBackground(Color.DARK_GRAY);
+		answer_labelB.setForeground(Color.green);
+		answer_labelB.setFont(new Font("MV Boli",Font.PLAIN,35));
+		
+		answer_labelC.setBounds(100,360,500,100);
+		answer_labelC.setBackground(Color.DARK_GRAY);
+		answer_labelC.setForeground(Color.green);
+		answer_labelC.setFont(new Font("MV Boli",Font.PLAIN,35));		
+		
+		answer_labelD.setBounds(100,460,500,100);
+		answer_labelD.setBackground(Color.DARK_GRAY);
+		answer_labelD.setForeground(Color.green);
+		answer_labelD.setFont(new Font("MV Boli",Font.PLAIN,35));
+		
+		
+		seconds_left.setBounds(535,560,80,80);
+		seconds_left.setBackground(Color.DARK_GRAY);
+		seconds_left.setForeground(Color.red);
+		seconds_left.setFont(new Font("Ink Free",Font.BOLD,60));
+		seconds_left.setBorder(BorderFactory.createBevelBorder(1));
+		seconds_left.setOpaque(true);
+		seconds_left.setHorizontalAlignment(JTextField.CENTER);
+		seconds_left.setText(String.valueOf(seconds));
+		
+		
+		time_label.setBounds(530,530,100,25);
+		time_label.setBackground(Color.DARK_GRAY);
+		time_label.setForeground(Color.red);
+		time_label.setFont(new Font("MV Boli",Font.PLAIN,20));
+		time_label.setHorizontalAlignment(JTextField.CENTER);
+		time_label.setText("Time left");
+		
+		
+		
+				
+				
+		frame.add(textfield);
+		frame.add(textarea);
+		frame.add(buttonA);
+		frame.add(buttonB);
+		frame.add(buttonC);
+		frame.add(buttonD);
+		frame.add(answer_labelA);
+		frame.add(answer_labelB);
+		frame.add(answer_labelC);
+		frame.add(answer_labelD);
+		frame.add(seconds_left);
+		frame.add(time_label);
+		frame.setVisible(true);
+		NextQuestion();
+	}
+	public void NextQuestion()
+	{
+		if(index>=total_questions)
+		{
+			Result();
+		}
+		else
+		{
+			textfield.setText("Question "+(index+1));
+			textarea.setText(Question[index]);
+			answer_labelA.setText(options[index][0]);
+			answer_labelB.setText(options[index][1]);
+			answer_labelC.setText(options[index][2]);
+			answer_labelD.setText(options[index][3]);
+			timer.start();
+		}
+	}
+	
+	public void actionPerformed(ActionEvent e) 
+	{
+		
+		buttonA.setEnabled(false);
+		buttonB.setEnabled(false);
+		buttonC.setEnabled(false);
+     	buttonD.setEnabled(false);
+     	
+     	if(e.getSource()==buttonA)
+     	{
+     		answer='A';
+     		if(answer==Answers[index])
+     		{
+     			correct_guesses++;
+     			
+     		}
+     	}
+     	if(e.getSource()==buttonB)
+     	{
+     		answer='B';
+     		if(answer==Answers[index])
+     		{
+     			correct_guesses++;
+     			
+     		}
+     	}
+     	if(e.getSource()==buttonC)
+     	{
+     		answer='C';
+     		if(answer==Answers[index])
+     		{
+     			correct_guesses++;
+     			
+     		}
+     	}
+     	if(e.getSource()==buttonD)
+     	{
+     		answer='D';
+     		if(answer==Answers[index])
+     		{
+     			correct_guesses++;
+     			
+     		}
+     	}
+     	displayAnswer();
+}
+     	public void displayAnswer()
+	{
+     		timer.stop();
+     		buttonA.setEnabled(false);
+    		buttonB.setEnabled(false);
+    		buttonC.setEnabled(false);
+         	buttonD.setEnabled(false);
+         	if(Answers[index]!= 'A')
+         		{
+         	answer_labelA.setForeground(Color.red);
+         
+         	}
+         	
+         	if(Answers[index]!= 'B')
+         		{answer_labelB.setForeground(Color.red);
+         		
+         		}
+         	
+         	if(Answers[index]!= 'C')
+         		{answer_labelC.setForeground(Color.red);}
+         	
+         	if(Answers[index]!= 'D')
+         		{answer_labelD.setForeground(Color.red);
+         		
+         		}
+         	Timer pause= new Timer(1000, new ActionListener() {
+         		public void actionPerformed(ActionEvent e)
+         		{
+         			answer_labelA.setForeground(Color.green);
+         			answer_labelB.setForeground(Color.green);
+         			answer_labelC.setForeground(Color.green);
+         			answer_labelD.setForeground(Color.green);
+         			answer=' ';
+         			seconds=10;
+         			seconds_left.setText(String.valueOf(seconds));
+         			buttonA.setEnabled(true);
+         			buttonB.setEnabled(true);
+         			buttonC.setEnabled(true);
+         			buttonD.setEnabled(true);
+         			index++;
+         			NextQuestion();
+         		}
+         	});
+         	pause.setRepeats(false);
+         	pause.start();
+	}
+	public void Result()
+	{
+		frame.setVisible(false);
+		
+		JFrame f=new JFrame();
+		JTextField t=new JTextField("RSEULT");
+		JLabel l=new JLabel("Correct Guesses");
+		JLabel p=new JLabel("Percentage");
+		JTextField number_right=new JTextField();
+		JTextField percentage=new JTextField();
+		JButton playagain=new JButton("Play Again");
+		JButton e=new JButton("EXIT");
+		
+		
+		f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		f.setSize(500,600);
+		f.getContentPane().setBackground(Color.DARK_GRAY);
+		f.setLayout(null);
+		f.setResizable(false);
+		
+		
+		t.setBounds(20, 20, 450, 100);
+		t.setBackground(Color.BLACK);
+		t.setForeground(Color.green);
+		t.setFont(new Font("Ink Free",Font.BOLD,50));
+		t.setBorder(BorderFactory.createBevelBorder(1));
+		t.setHorizontalAlignment(JTextField.CENTER);
+		t.setEditable(false);
+		
+
+		l.setBounds(10,150,250,100);
+		l.setBackground(Color.DARK_GRAY);
+		l.setForeground(Color.WHITE);
+		l.setFont(new Font("Ink Free",Font.BOLD,30));
+		
+	
+	
+		
+		number_right.setBounds(280,150,180,80);
+		number_right.setBackground(Color.DARK_GRAY);
+		number_right.setForeground(Color.GREEN);
+		number_right.setFont(new Font("Ink Free",Font.BOLD,45));
+		number_right.setBorder(BorderFactory.createBevelBorder(1));
+		number_right.setHorizontalAlignment(JTextField.CENTER);
+		number_right.setEditable(false);
+		
+		
+		p.setBounds(10,260,200,100);
+		p.setBackground(Color.darkGray);
+		p.setForeground(Color.WHITE);
+		p.setFont(new Font("Ink Free",Font.BOLD,35));
+		
+		
+		percentage.setBounds(280,280,180,80);
+		percentage.setBackground(Color.darkGray);
+		percentage.setForeground(Color.green);
+		percentage.setFont(new Font("Ink Free",Font.BOLD,50));
+		percentage.setBorder(BorderFactory.createBevelBorder(1));
+		percentage.setHorizontalAlignment(JTextField.CENTER);
+		percentage.setEditable(false);
+		
+		
+		playagain.setBounds(70,400,180,70);
+		playagain.setToolTipText("press if you want to play again");
+		playagain.setForeground(Color.green);
+		playagain.setFont(new Font("Ink Free",Font.BOLD,30));
+		playagain.setHorizontalAlignment(JTextField.CENTER);
+		playagain.setCursor(c);
+		 playagain.addActionListener(new ActionListener()
+		  { public void actionPerformed(ActionEvent e)	 {
+					f.setVisible(false); 
+					  playagain(); }
+		  });
+		
+		e.setBounds(300,400,130,70);
+		e.setToolTipText("Press To Exit");
+		e.setForeground(Color.green);
+		e.setFont(new Font("Ink Free",Font.BOLD,30));
+		e.setHorizontalAlignment(JTextField.CENTER);
+		e.setCursor(c);
+		e.addActionListener(new ActionListener()
+		 {
+	       public void actionPerformed(ActionEvent event)
+	       { 
+		  try{ 
+                      try{  Class.forName("org.sqlite.JDBC");
+                      Connection con = DriverManager.getConnection("jdbc:sqlite:test.db");
+                      Statement stmt = null;
+                      stmt = con.createStatement();
+                      ;
+                      
+                      ResultSet rs = stmt.executeQuery( "SELECT * FROM players3 " );int find=0;
+                      while((rs.next())&&find==0)
+                      {
+                          if(rs.getInt("ID")==id)
+                          {
+                              int score=rs.getInt("SCORE")+correct_guesses;
+                              
+                              String sql = "UPDATE players3 SET SCORE="+score+" WHERE id="+id+"" ;
+                              stmt.executeUpdate(sql);
+                              find=1;   
+                          }
+                      }
+                      } catch (ClassNotFoundException ex) {
+                          java.util.logging.Logger.getLogger(questions.class.getName()).log(Level.SEVERE, null, ex);
+                      } catch (SQLException ex) {
+                          java.util.logging.Logger.getLogger(questions.class.getName()).log(Level.SEVERE, null, ex);
+                      }
+                      
+                      f.setVisible(false);
+                      players p2=new players();
+                      p2.games();
+                  } catch (Exception ex) {
+                java.util.logging.Logger.getLogger(questions.class.getName()).log(Level.SEVERE, null, ex);
+            }
+	      }
+																	                                           
+         });
+		
+		result = (int)((correct_guesses/(double)total_questions)*100);
+		number_right.setText("("+correct_guesses+"/"+total_questions+")");
+		percentage.setText(result+"%");
+		
+		f.add(t);
+		f.add(l);
+		f.add(p);
+		f.add(number_right);
+		f.add(percentage);
+		f.add(playagain);
+		f.add(e);
+		f.setVisible(true);
+                
+                           
+
+		
+		   /* buttonA.setEnabled(false);
+			buttonB.setEnabled(false);
+			buttonC.setEnabled(false);
+			buttonD.setEnabled(false);
+			
+			result = (int)((correct_guesses/(double)total_questions)*100);
+			textfield.setText("Result");
+			textarea.setText(" ");
+			answer_labelA.setText("");
+			answer_labelB.setText("");
+			answer_labelC.setText("");
+			answer_labelD.setText("");
+			
+			number_right.setText("("+correct_guesses+"/"+total_questions+")");
+			percentage.setText(result+"%");
+			
+			frame.add(number_right);
+			frame.add(percentage);*/
+			
+	}public  void playagain()
+	{
+		
+		new questions(this.id);
+		
+	}
+}
+package project;
+import java.lang.*;
+import javax.swing.event.*;
+import javax.imageio.ImageIO;
+import javax.swing.*;
+import java.awt.event.*;
+import java.awt.image.BufferedImage;
+import java.util.ArrayList;
+import java.util.Scanner;
+
+import javax.swing.*;
+import java.awt.*;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.sql.Statement;
+public class game implements ActionListener
+{int id;
+	public  JFrame f;
+    public   JLabel l;
+	public  JPanel p;
+	public JTextArea textfield1;
+	public   JTextField textfield;
+	public  int score=0;
+	public JRadioButton rb1;
+	public JRadioButton rb2;
+	public JRadioButton rb3;
+	public JRadioButton rb4;
+	 public game(int iD)
+	{ this.id=iD;
+		f=new JFrame("Guess Game");
+		f.setSize(1000,1000);
+		f.setLayout(null);
+				p=new JPanel();
+				p.setBackground(Color.magenta);
+				p.setLayout(null);
+		p.setBounds(10, 10,1000,1000);
+	   l=new JLabel("");
+	   l.setIcon(new ImageIcon("200.gif"));
+	   l.setBackground(Color.MAGENTA);
+           
+           l.setBounds(320, 10, 300, 500);
+	   JButton b=new JButton("Play");
+	   b.setBackground(Color.pink);
+	   b.setForeground(Color.BLUE);
+	   b.setBounds(400,500,100,40);
+         b.setVisible(true);
+	   p.add(l);
+	   p.add(b);
+
+		b.addActionListener(new ActionListener()
+				{
+			public void actionPerformed(ActionEvent e)
+			{
+				l.setVisible(false);
+				p.setBackground(Color.orange);
+				b.setVisible(false);
+				textfield=new JTextField();
+				textfield.setEditable(false);
+				textfield.setText("Score: "+score);
+				textfield.setBounds(650, 40, 150, 40);
+				textfield.setBackground(Color.BLACK);
+				textfield.setForeground(Color.MAGENTA);
+				 p.add(textfield);
+			l=new JLabel();
+				l.setIcon(new ImageIcon("spider.jpg")); 
+                l.setBounds(20, 40, 600, 600);
+				p.add(l);
+				textfield1 =new JTextArea();
+				textfield1.setBackground(Color.BLACK);
+				textfield1.setBounds(250,40,300,40);
+				textfield1.setForeground(Color.MAGENTA);
+				textfield1.setEditable(false);
+				textfield1.setText("                      Image 1 of 10");
+				p.add(textfield1);
+				
+				
+                //radiobutton for first image
+			     rb1=new JRadioButton("Ant");
+				 rb2=new JRadioButton("Snake");
+				 rb3=new JRadioButton("Spider");
+				rb4=new JRadioButton("None of Above");
+				rb1.setBounds(650,160,250,50);
+				rb2.setBounds(650,230,250,50);
+				rb3.setBounds(650,300,250,50);
+				rb4.setBounds(650,370,250,50);
+				rb1.setBackground(Color.LIGHT_GRAY);
+				rb2.setBackground(Color.LIGHT_GRAY);
+				rb3.setBackground(Color.LIGHT_GRAY);
+				rb4.setBackground(Color.LIGHT_GRAY);
+				ButtonGroup bg=new ButtonGroup();
+			     bg.add(rb1);
+					bg.add(rb2);
+					
+					bg.add(rb3);
+					bg.add(rb4);
+				p.add(rb1);
+				p.add(rb2);
+				p.add(rb3); 
+				p.add(rb4);
+				
+				JButton ok=new JButton("Ok");
+				ok.setBackground(Color.MAGENTA);
+				ok.setBounds(750, 600, 100, 60);
+				p.add(ok);
+				
+				//on clicking ok of 1st image show image 2
+				 
+			
+				ok.addActionListener(new ActionListener() 
+				{
+					public void actionPerformed(ActionEvent e)
+					{
+				   
+				  
+					ok.setVisible(false);
+					//show correct answer for 1st image
+	             if(rb3.isSelected()==true)
+                  	{
+		                score++;
+	                 	textfield.setText("Score: "+score);
+		                JOptionPane.showMessageDialog(null, "Correct Answer");
+	                      }
+	              //show wrong answer for first image
+	            else
+             	{
+	               	JOptionPane.showMessageDialog(null, "Wrong Answer\nCorrect Answer is\t"+rb3.getActionCommand());
+	           }
+				bg.clearSelection();
+					l.setIcon(new ImageIcon("dining table.jpg")); // NOI18N
+					 p.add(l);
+					 textfield1.setText("                      Image 2 of 10");
+					 rb1.setText("Marriage hall");
+					 rb2.setText("Dining Table");
+					 rb3.setText("Labortory");
+					 rb4.setText("Party");
+					 
+					 //ok button of 2nd image
+								JButton ok1=new JButton("Ok");
+								ok1.setBackground(Color.MAGENTA);
+								ok1.setBounds(750, 600, 100, 60);
+								p.add(ok1);
+								ok1.addActionListener(new ActionListener()
+										{
+									public void actionPerformed(ActionEvent e)
+									{
+										ok1.setVisible(false);
+										
+										if(rb2.isSelected()==true)
+										{
+											score++;
+											textfield.setText("Score: "+score);
+											JOptionPane.showMessageDialog(null, "Correct Answer:)");
+										}
+										else
+										{
+											JOptionPane.showMessageDialog(null, "wrong Answer:(/Correct Answer is:"+rb2.getActionCommand());
+										}
+										 bg.clearSelection();
+                                         
+									l.setIcon(new ImageIcon("dino.jpg")); // NOI18N
+									 p.add(l);
+									 textfield1.setText("Image 3 of 10");
+									 rb1.setText("Snake");
+									 rb2.setText("Lizard");
+									 rb3.setText("Dinosaur");
+									 rb4.setText("Wild Horse");
+									 
+									 //ok button of 3rd image
+									JButton ok2=new JButton("ok");
+									ok2.setBackground(Color.MAGENTA);
+									ok2.setBounds(750, 600, 100, 60);
+									p.add(ok2);
+									ok2.addActionListener(new ActionListener()
+											{
+											public void actionPerformed(ActionEvent e)
+											{
+												ok2.setVisible(false);
+												if(rb3.isSelected()==true)
+												{
+													JOptionPane.showMessageDialog(null, "Correct Answer:)");
+													score++;
+													textfield.setText("Score: "+score);
+												}
+												else
+												{
+													JOptionPane.showMessageDialog(null, "Wrong Answer:(\nCorrect Answer:"+rb3.getActionCommand());
+												}
+												bg.clearSelection();
+												//image 4 shown
+										l.setIcon(new ImageIcon("crow.jpg")); // NOI18N
+										 p.add(l);
+										 textfield1.setText("                      Image 4 of 10");
+										 rb1.setText("Pigeon");
+										 rb2.setText("Crow");
+										 rb3.setText("Dove");
+										 rb4.setText("Chick");
+							
+										//ok button of 4th image 
+										JButton ok3=new JButton("Ok");
+										ok3.setBackground(Color.MAGENTA);
+										ok3.setBounds(750, 600, 100, 60);
+										p.add(ok3);
+										ok3.addActionListener(new ActionListener()
+												{
+											
+                                           public void actionPerformed(ActionEvent e)
+                                           {
+											ok3.setVisible(false);
+
+											if(rb2.isSelected()==true)
+											{
+												JOptionPane.showMessageDialog(null, "Correct Answer:)");
+												score++;
+												textfield.setText("Score: "+score);
+											}
+											else
+											{
+												JOptionPane.showMessageDialog(null, "Wrong Answer:(\nCorrect Answer:"+rb2.getActionCommand());
+											}
+											bg.clearSelection();
+			                        //5th image shown
+									l.setIcon(new ImageIcon("sky.jpg")); 
+									 textfield1.setText("                      Image 5 of 10");
+									 rb1.setText("Water ");
+									 rb2.setText("Sky");
+									 rb3.setText("Gas Molecules");
+									 rb4.setText("Ozone Layer");									
+                                           //ok button of 5th image
+									 JButton ok4=new JButton("Ok");
+									ok4.setBounds(750, 600, 100, 60);
+									ok4.setBackground(Color.MAGENTA);
+									p.add(ok4);
+					                 ok4.addActionListener(new ActionListener()
+					                		 {
+					                	      public void actionPerformed(ActionEvent e)
+					                	      {
+					                	    	  ok4.setVisible(false);
+					          
+					                	    	  if( rb2.isSelected()==true)
+					                	    	  {
+					                	    		 JOptionPane.showMessageDialog(null, "Correct Answer:)");
+					                	    		 score++;
+					                	    		 textfield.setText("Score: "+score);
+					                	    		 
+					                	    	  }
+					                	    	  else
+					                	    	  {
+					                	    		  JOptionPane.showMessageDialog(null, "Wrong Answer:(\nCorrect Answer:"+rb2.getActionCommand());
+					                	    	  }
+					                	    	  bg.clearSelection();
+					                	    	  //6th image shown
+					                	    	  l.setIcon(new ImageIcon("cucumberp.jpg")); 
+													 textfield1.setText("                      Image 6 of 10");
+													 rb1.setText("Bitter Gourd ");
+													 rb2.setText("Cucumber");
+													 rb3.setText("Pumpkin");
+													 rb4.setText("Green Onion");
+													 //ok button of 6th image
+													 JButton ok5=new JButton("Ok");
+													 ok5.setBackground(Color.MAGENTA);
+													 ok5.setBounds(750, 600, 100, 60);
+													 p.add(ok5);
+													 ok5.addActionListener(new ActionListener()
+															 {
+														 public void actionPerformed(ActionEvent e)
+														 {
+															 ok5.setVisible(false);
+															 if(rb2.isSelected()==true)
+													    {
+																 JOptionPane.showMessageDialog(null, "Correct Answer:)");
+								                	    		 score++;
+								                	    		 textfield.setText("Score: "+score);
+													     }
+												 			 else
+															 {
+												 				 JOptionPane.showMessageDialog(null, "Wrong Answer:(\nCorrect Answer:"+rb2.getActionCommand());
+															 }
+															 bg.clearSelection();
+														
+													 //7th image shown
+													  l.setIcon(new ImageIcon("blackberry.jpg")); 
+														 textfield1.setText("                      Image 7 of 10");
+														 rb1.setText("Grapes");
+														 rb2.setText("BlackBerry");
+														 rb3.setText("Black Currant");
+														 rb4.setText("Mulberry");
+														 //ok button of 7th image
+														 JButton ok6=new JButton("Ok");
+														 ok6.setBackground(Color.MAGENTA);
+														 ok6.setBounds(750, 600, 100, 60);
+														 p.add(ok6);
+														 ok6.addActionListener(new ActionListener()
+																 {
+															 public void actionPerformed(ActionEvent e)
+															 {
+																  ok6.setVisible(false);
+																 if(rb2.isSelected()==true)
+														    {
+																	 JOptionPane.showMessageDialog(null, "Correct Answer:)");
+									                	    		 score++;
+									                	    		 textfield.setText("Score: "+score);
+														     }
+													 			 else
+																 {
+													 				 JOptionPane.showMessageDialog(null, "Wrong Answer:(\nCorrect Answer:"+rb2.getActionCommand());
+																 }
+																 bg.clearSelection();
+																//8th image shown
+																  l.setIcon(new ImageIcon("spice.jpg")); 
+																	 textfield1.setText("                      Image 8 of 10");
+																	 rb1.setText("Flower");
+																	 rb2.setText("Spice");
+																	 rb3.setText("Sea Plant");
+																	 rb4.setText("Wooden Craft");
+																	 //ok button of 8th image
+																	 JButton ok7=new JButton("Ok");
+																	 ok7.setBackground(Color.MAGENTA);
+																	 ok7.setBounds(750, 600, 100, 60);
+																	 p.add(ok7);
+																	 ok7.addActionListener(new ActionListener()
+																			 {
+																		 public void actionPerformed(ActionEvent e)
+																		 {
+																			  ok7.setVisible(false);
+																			 if(rb2.isSelected()==true)
+																	    {
+																				 JOptionPane.showMessageDialog(null, "Correct Answer:)");
+												                	    		 score++;
+												                	    		 textfield.setText("Score: "+score);
+																	     }
+																 			 else
+																			 {
+																 				 JOptionPane.showMessageDialog(null, "Wrong Answer:(\nCorrect Answer:"+rb2.getActionCommand());
+																			 }
+																			 bg.clearSelection();
+																			//9th image shown
+																			  l.setIcon(new ImageIcon("mushroom.jpg")); 
+																				 textfield1.setText("                      Image 9 of 10");
+																				 rb1.setText("Flower");
+																				 rb2.setText("Spice");
+																				 rb3.setText("Sea Plant");
+																				 rb4.setText("Mushroom");
+																				 //ok button of 9th image
+																				 JButton ok8=new JButton("Ok");
+																				 ok8.setBackground(Color.MAGENTA);
+																				 ok8.setBounds(750, 600, 100, 60);
+																				 p.add(ok8);
+																				 ok8.addActionListener(new ActionListener()
+																						 {
+																					 public void actionPerformed(ActionEvent e)
+																					 {
+																						  ok8.setVisible(false);
+																						 if(rb4.isSelected()==true)
+																				    {
+																							 JOptionPane.showMessageDialog(null, "Correct Answer:)");
+															                	    		 score++;
+															                	    		 textfield.setText("Score: "+score);
+																				     }
+																			 			 else
+																						 {
+																			 				 JOptionPane.showMessageDialog(null, "Wrong Answer:(\nCorrect Answer:"+rb2.getActionCommand());
+																						 }
+																						 bg.clearSelection();
+																						//10th image shown
+																						  l.setIcon(new ImageIcon("cheese.jpg")); 
+																							 textfield1.setText("                    Image 10 of 10");
+																							 rb1.setText("Boiled Eggs");
+																							 rb2.setText("Meat");
+																							 rb3.setText("Cheese");
+																							 rb4.setText("Sweets");//kro run??????????????????
+																									 //on clicking finish button
+																                                  JButton finish=new JButton("Finish");
+																                                  finish.setBackground(Color.MAGENTA);
+																                                  finish.setBounds(750, 600, 100, 60);
+																                                      p.add(finish);
+																                                 finish.addActionListener(new ActionListener()
+																                                    		  {
+																                          
+																                                     public void actionPerformed(ActionEvent e)
+																                                    	  {
+									textfield1.setVisible(false);							                                    		  
+		           if(rb3.isSelected()==true)
+					{
+					JOptionPane.showMessageDialog(null, "Correct Answer:)");
+						score=score+1;
+						textfield.setText("      Your Score: "+score);
+						textfield.setBounds(100, 30, 400, 100);
+					}
+				else
+			{
+			JOptionPane.showMessageDialog(null, "Wrong Answer:)\nCorrect Answer:\t"+rb3.getActionCommand());
+					}
+		           l.setVisible(false);
+         		  rb1.setVisible(false);
+         		  rb2.setVisible(false);
+         		  rb3.setVisible(false);
+         		  rb4.setVisible(false);
+         		  finish.setVisible(false);
+		  JButton playagain=new JButton("Play again");
+		  playagain.setBackground(Color.MAGENTA);
+		  playagain.setBounds(350, 100, 100, 60);
+		  JButton exit=new JButton("Exit");
+                  exit.addActionListener(new ActionListener(){
+    public void actionPerformed(ActionEvent e3)
+    {
+    try{  Class.forName("org.sqlite.JDBC");
+	        Connection con = DriverManager.getConnection("jdbc:sqlite:test.db");
+	         Statement stmt = null;
+	        stmt = con.createStatement();
+               ;
+              
+                  ResultSet rs = stmt.executeQuery( "SELECT * FROM players3 " );int find=0;
+                      while((rs.next())&&find==0)
+                      {
+                          if(rs.getInt("ID")==id)
+                          {
+                              System.out.println("iii");
+                              score=rs.getInt("score")+score;
+                              String sql = "UPDATE players3 SET SCORE="+score+" WHERE id="+id+"" ;
+                               stmt.executeUpdate(sql);
+                              find=1;   
+                            
+                          }
+                      }
+                     
+                       
+                       } catch (Exception ex) {
+           
+        }players p2= new players();
+    p2.games();}
+    
+    
+ 
+});
+
+		  exit.setBackground(Color.MAGENTA);
+		  exit.setBounds(350, 180, 100, 60);
+		  p.add(playagain);
+	  p.add(exit);
+			 playagain.addActionListener(new ActionListener()
+	  {
+					 public void actionPerformed(ActionEvent e)
+			 {
+						f.setVisible(false); 
+				  playagain();
+				  
+				  }  });
+			 //playagain btn action listener closed
+			 exit.addActionListener(new ActionListener()
+			 {
+		  public void actionPerformed(ActionEvent e)
+		 {
+			  
+		  System.exit(0);															                                    
+		  }
+																		                                           
+	  });//exit btn action listener closed
+            
+	  }});
+       //finish button actionlistener closed
+																                                       
+														 
+		 }});//ok8 actionListener closed
+																	 
+			 }});//ok7 actionlistener closed
+													 
+			 
+	} });//ok6 button actionlistener of 7th image  closed
+														 }});//ok5 action listener closed
+			   }
+			   });//ok 4 (ok butn of 5th image) actionlistener closed
+				}
+	           });//ok3 actionlistener closed
+				}
+				});//ok2 actionlistenerclosed
+					
+	             }});//ok1 closed
+					}});//ok closed
+				
+			
+	}}   );//play button closed
+			p.add(l);
+			f.add(p);
+			f.setVisible(true);
+			
+
+				}//game class ftn
+				public  void playagain()
+				{
+					
+					new game(id);
+					
+				}
+
+    @Override
+    public void actionPerformed(ActionEvent ae) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+				}
+	
+	
+
